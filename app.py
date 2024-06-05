@@ -3,6 +3,7 @@ import numpy as np
 from turbo.awgn import AWGN
 from turbo.turbo_encoder import TurboEncoder
 from turbo.turbo_decoder import TurboDecoder
+import random
 
 app = Flask(__name__)
 
@@ -11,12 +12,12 @@ def index():
     if request.method == 'POST':
         input_vector = request.form['input_text']
         input_vector = [int(bit) for bit in input_vector if bit.isdigit()]
-        encoded_output, decoded_output = process_data(input_vector)
-        return render_template('index.html', input_vector=input_vector, encoded_output=encoded_output, decoded_output=decoded_output)
+        interleaver = random.sample(range(len(input_vector)), len(input_vector))
+        encoded_output, decoded_output = process_data(input_vector, interleaver)
+        return render_template('index.html', input_vector=input_vector, interleaver=interleaver, encoded_output=encoded_output, decoded_output=decoded_output)
     return render_template('index.html')
 
-def process_data(input_vector):
-    interleaver = [9, 8, 5, 6, 2, 1, 7, 0, 3, 4]
+def process_data(input_vector, interleaver):
     encoder = TurboEncoder(interleaver)
     decoder = TurboDecoder(interleaver)
     channel = AWGN(0)

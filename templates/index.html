@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Turbo Encoder</h1>
+        <h1>Turbo Encoder/Decoder</h1>
         <form method="POST">
             <label for="input_text">Enter binary input:</label><br>
             <input type="text" id="input_text" name="input_text"><br><br>
@@ -18,6 +18,8 @@
         <h2>Results:</h2>
         <p>Input Vector:</p>
         <pre>{{ input_vector }}</pre>
+        <p>Interleaver:</p>
+        <pre>{{ interleaver }}</pre>
         <p>Encoded Output:</p>
         <pre>{{ encoded_output }}</pre>
         <p>Decoded Output:</p>
