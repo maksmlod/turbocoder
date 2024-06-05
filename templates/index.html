@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo Encoder/Decoder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Turbo Encoder</h1>
+        <form method="POST">
+            <label for="input_text">Enter binary input:</label><br>
+            <input type="text" id="input_text" name="input_text"><br><br>
+            <button type="submit">Submit</button>
+        </form>
+        {% if input_vector %}
+        <h2>Results:</h2>
+        <p>Input Vector:</p>
+        <pre>{{ input_vector }}</pre>
+        <p>Encoded Output:</p>
+        <pre>{{ encoded_output }}</pre>
+        <p>Decoded Output:</p>
+        <pre>{{ decoded_output }}</pre>
+        {% endif %}
+    </div>
+
+    <script>
+        // Here you can include any JavaScript code you need
+    </script>
+</body>
+</html>

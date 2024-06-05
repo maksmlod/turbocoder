@@ -1,45 +1,36 @@
+from flask import Flask, request, render_template
 import numpy as np
-
 from turbo.awgn import AWGN
 from turbo.turbo_encoder import TurboEncoder
 from turbo.turbo_decoder import TurboDecoder
 
-def print_results():
+app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        input_vector = request.form['input_text']
+        input_vector = [int(bit) for bit in input_vector if bit.isdigit()]
+        encoded_output, decoded_output = process_data(input_vector)
+        return render_template('index.html', input_vector=input_vector, encoded_output=encoded_output, decoded_output=decoded_output)
+    return render_template('index.html')
+
+def process_data(input_vector):
     interleaver = [9, 8, 5, 6, 2, 1, 7, 0, 3, 4]
     encoder = TurboEncoder(interleaver)
     decoder = TurboDecoder(interleaver)
-
     channel = AWGN(0)
 
-    input_vector = [1, 1, 0, 1, 1, 0, 1, 0, 1, 0]
     encoded_vector = encoder.execute(input_vector)
 
     channel_vector = list(map(float, encoded_vector))
     channel_vector = channel.convert_to_symbols(channel_vector)
-
     channel_vector = channel.execute(channel_vector)
 
     decoded_vector = decoder.execute(channel_vector)
     decoded_vector = [int(b > 0.0) for b in decoded_vector]
 
-    print("")
-    print("--test_turbo_decoder--")
-    print("input_vector = {}".format(input_vector))
-    print("encoded_vector = {}".format(encoded_vector))
-    print("decoded_vector = {}".format(decoded_vector))
-'''
-    print("Oczekiwany wynik kodowania:")
-    print(np.array([1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]))
-    print("Wynik kodowania:")
-    print(encoded_output)
-
-    print("\n")
-    print("Oczekiwany wynik dekodowania:")
-    print(vector)
-    print("Wynik dekodowania:")
-    print(decoded_output)
-'''
+    return encoded_vector, decoded_vector
 
 if __name__ == '__main__':
-    print_results()
-
+    app.run(debug=True)
