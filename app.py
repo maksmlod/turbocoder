@@ -79,6 +79,7 @@ def generate_plot(input_vector):
     plt.close()
 
 
+
 @app.route('/plot')
 def plot():
     return send_file('static/error_rate_plot.png', mimetype='image/png')
