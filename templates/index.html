@@ -12,6 +12,8 @@
         <form method="POST">
             <label for="input_text">Enter binary input:</label><br>
             <input type="text" id="input_text" name="input_text"><br><br>
+            <label for="awgn_level">AWGN Level:</label><br>
+            <input type="number" id="awgn_level" name="awgn_level" value="0"><br><br>
             <button type="submit">Submit</button>
         </form>
         {% if input_vector %}
@@ -20,6 +22,8 @@
         <pre>{{ input_vector }}</pre>
         <p>Interleaver:</p>
         <pre>{{ interleaver }}</pre>
+        <p>AWGN Level:</p>
+        <pre>{{ awgn_level }}</pre>
         <p>Encoded Output:</p>
         <pre>{{ encoded_output }}</pre>
         <p>Decoded Output:</p>

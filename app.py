@@ -12,15 +12,16 @@ def index():
     if request.method == 'POST':
         input_vector = request.form['input_text']
         input_vector = [int(bit) for bit in input_vector if bit.isdigit()]
+        awgn_level = int(request.form['awgn_level'])
         interleaver = random.sample(range(len(input_vector)), len(input_vector))
-        encoded_output, decoded_output = process_data(input_vector, interleaver)
-        return render_template('index.html', input_vector=input_vector, interleaver=interleaver, encoded_output=encoded_output, decoded_output=decoded_output)
+        encoded_output, decoded_output = process_data(input_vector, interleaver, awgn_level)
+        return render_template('index.html', input_vector=input_vector, interleaver=interleaver, awgn_level=awgn_level, encoded_output=encoded_output, decoded_output=decoded_output)
     return render_template('index.html')
 
-def process_data(input_vector, interleaver):
+def process_data(input_vector, interleaver, awgn_level):
     encoder = TurboEncoder(interleaver)
     decoder = TurboDecoder(interleaver)
-    channel = AWGN(0)
+    channel = AWGN(awgn_level)
 
     encoded_vector = encoder.execute(input_vector)
 
