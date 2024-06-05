@@ -13,11 +13,12 @@ class Trellis:
         return np.max(result)
 
     def __init__(self):
+        # ! dodane (dtype="object") - bez tego nie działa na obecnej wersji numpy
         self.transition_matrix = np.array(
                                   [[(-1, -1), None, (1, 1), None],
                                   [(1, -1), None, (-1, 1), None],
                                   [None, (-1, -1), None, (1, 1)],
-                                  [None, (1, -1), None, (-1, 1)]])
+                                  [None, (1, -1), None, (-1, 1)]], dtype="object")
 
         self.past_states = [(0, 1), (2, 3), (0, 1), (2, 3)]
         self.future_states = [(0, 2), (0, 2), (1, 3), (1, 3)]
