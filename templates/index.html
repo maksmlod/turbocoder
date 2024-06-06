@@ -72,7 +72,7 @@
             <div class="label-box light-mode">
                 <label for="awgn_level">AWGN Level [dB]:</label><br>
             </div>
-            <input type="number" id="awgn_level" name="awgn_level" value="{{ awgn_level }}" min="0" max="5000"><br><br>
+            <input type="number" id="awgn_level" name="awgn_level" value="{{ awgn_level }}" min="-1000" max="1000"><br><br>
             <div class="label-box light-mode">
                 <input type="checkbox" id="generate_plot" name="generate_plot">
                 <label for="generate_plot">Generate Error Rate(AWGN) plot</label>
@@ -99,12 +99,30 @@
             <p>{{ encoded_output }}</p>
         </div>
         <div class="result-box">
-        <p>Channel Vector with awgn = 0 dB:</p>
+        <p>Channel Vector with AWGN = 0 dB:</p>
         <p>{{ channel_vector_before }}</p>
         </div>
         <div class="result-box">
-        <p>Channel Vector with given awgn:</p>
+        <p>Channel Vector with given AWGN:</p>
         <p>{{ channel_vector_after }}</p>
+        </div>
+        <div class="result-box">
+        <p>Encoded Output for Channel Vector with given AWGN:</p>
+        <p>
+                {% for idx in range(decoded_vector2|length) %}
+                    {% set input_bit = encoded_output[idx] %}
+                    {% set decoded_bit = decoded_vector2[idx] %}
+                    {% if input_bit != decoded_bit %}
+                        {% if idx < decoded_vector2|length - 0 %} <!--  2 --->
+                            <span class="different">{{ decoded_bit }}</span>
+                        {% else %}
+                            <span class="gray">{{ decoded_bit }}</span>
+                        {% endif %}
+                    {% else %}
+                        {{ decoded_bit }}
+                    {% endif %}
+                {% endfor %}
+            </p>
         </div>
         <div class="result-box">
             <p>Decoded Output:</p>

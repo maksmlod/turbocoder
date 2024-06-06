@@ -20,7 +20,7 @@ def index():
         awgn_level = int(request.form['awgn_level'])
         generate_plot_flag = 'generate_plot' in request.form
         interleaver = random.sample(range(len(input_vector)), len(input_vector))
-        encoded_output, decoded_output, channel_vector_before, channel_vector_after = process_data2(input_vector, interleaver, awgn_level)
+        encoded_output, decoded_output, channel_vector_before, channel_vector_after, decoded_vector2 = process_data2(input_vector, interleaver, awgn_level)
         error_rate = calculate_error_rate(input_vector, decoded_output)
 
         if generate_plot_flag:
@@ -29,7 +29,7 @@ def index():
         return render_template('index.html', input_vector=input_vector, interleaver=interleaver,
                                awgn_level=awgn_level, encoded_output=encoded_output, decoded_output=decoded_output,
                                error_rate=error_rate, generate_plot_flag=generate_plot_flag,
-                               channel_vector_before=channel_vector_before, channel_vector_after=channel_vector_after)
+                               channel_vector_before=channel_vector_before, channel_vector_after=channel_vector_after, decoded_vector2=decoded_vector2)
     return render_template('index.html', awgn_level=awgn_level)
 
 
@@ -77,25 +77,26 @@ def process_data2(input_vector, interleaver, awgn_level):
 
     decoded_vector = decoded_vector[:-2]
 
-    return encoded_vector, decoded_vector, channel_vector_before, channel_vector_after
+    decoded_vector2 = [0 if x < 0 else 1 for x in channel_vector_after]
+
+    return encoded_vector, decoded_vector, channel_vector_before, channel_vector_after, decoded_vector2
 
 
 def calculate_error_rate(input_vector, decoded_vector):
     error_count = sum(1 for x, y in zip(input_vector, decoded_vector) if x != y)
     total_bits = len(input_vector)
-    print(error_count)
     error_rate = (error_count / total_bits) * 100
     return error_rate
 
 
 def generate_plot(input_vector):
-    awgn_values = range(0, 100, 2)
+    awgn_values = range(-50, 50, 2)
     error_rates = []
 
     for awgn in awgn_values:
         total_error_rate = 0
         interleaver = random.sample(range(len(input_vector)), len(input_vector))
-        for _ in range(40):
+        for _ in range(20):
             _, decoded_output = process_data(input_vector, interleaver, awgn)
             total_error_rate += calculate_error_rate(input_vector, decoded_output)
         average_error_rate = total_error_rate / 50
