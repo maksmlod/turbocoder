@@ -70,12 +70,12 @@
             </div>
             <input type="text" id="input_text" name="input_text"><br><br>
             <div class="label-box light-mode">
-                <label for="awgn_level">AWGN Level:</label><br>
+                <label for="awgn_level">AWGN Level [dB]:</label><br>
             </div>
             <input type="number" id="awgn_level" name="awgn_level" value="{{ awgn_level }}" min="0" max="5000"><br><br>
             <div class="label-box light-mode">
                 <input type="checkbox" id="generate_plot" name="generate_plot">
-                <label for="generate_plot">Generate BER(AWGN) plot</label>
+                <label for="generate_plot">Generate Error Rate(AWGN) plot</label>
             </div>
             <input type="hidden" id="awgn_hidden" name="awgn_hidden" value="{{ awgn_level }}">
             <button type="submit">Submit</button>
@@ -83,7 +83,7 @@
         {% if input_vector %}
         <h2>Results:</h2>
         <div class="result-box">
-            <p>Input Vector:</p>
+            <p>Input:   </p>
             <p>{{ input_vector }}</p>
         </div>
         <div class="result-box">
@@ -92,11 +92,19 @@
         </div>
         <div class="result-box">
             <p>AWGN Level:</p>
-            <p>{{ awgn_level }}</p>
+            <p>{{ awgn_level }} dB</p>
         </div>
         <div class="result-box">
             <p>Encoded Output:</p>
             <p>{{ encoded_output }}</p>
+        </div>
+        <div class="result-box">
+        <p>Channel Vector with awgn = 0 dB:</p>
+        <p>{{ channel_vector_before }}</p>
+        </div>
+        <div class="result-box">
+        <p>Channel Vector with given awgn:</p>
+        <p>{{ channel_vector_after }}</p>
         </div>
         <div class="result-box">
             <p>Decoded Output:</p>
