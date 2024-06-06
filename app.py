@@ -46,6 +46,8 @@ def process_data(input_vector, interleaver, awgn_level):
     decoded_vector = decoder.execute(channel_vector)
     decoded_vector = [int(b > 0.0) for b in decoded_vector]
 
+    decoded_vector = decoded_vector[:-2]
+
     return encoded_vector, decoded_vector
 
 
@@ -57,7 +59,7 @@ def calculate_error_rate(input_vector, decoded_vector):
 
 
 def generate_plot(input_vector):
-    awgn_values = range(0, 40, 2)
+    awgn_values = range(0, 100, 2)
     error_rates = []
 
     for awgn in awgn_values:

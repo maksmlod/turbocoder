@@ -9,7 +9,7 @@ def print_results():
     encoder = TurboEncoder(interleaver)
     decoder = TurboDecoder(interleaver)
 
-    channel = AWGN(0)
+    channel = AWGN(-49)
 
     input_vector = [1, 1, 0, 1, 1, 0, 1, 0, 1, 0]
     encoded_vector = encoder.execute(input_vector)
